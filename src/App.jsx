@@ -603,6 +603,14 @@ const Step4_Confirmation = ({ onNext, onBack, reservation, setStep }) => {
 };
 
 const Step5_Complete = ({ reservation, onReset }) => {
+  const serviceTypeMap = {
+    shaken: '車検（24ヶ月点検）',
+    '12m_check': '12ヶ月点検',
+    '6m_check': '6ヶ月点検',
+    oil_change: 'オイル交換',
+    repair: '一般修理・その他',
+  };
+
   return (
     <div className="text-center py-10">
       <CheckCircle className="mx-auto h-16 w-16 text-green-500" />
@@ -623,6 +631,8 @@ const Step5_Complete = ({ reservation, onReset }) => {
           <p className="text-gray-700"><strong className="font-semibold">第2希望:</strong> {formatDate(reservation.date2)} {reservation.time2}</p>
         )}
         <p className="text-gray-700"><strong className="font-semibold">お名前:</strong> {reservation.name}</p>
+        <p className="text-gray-700"><strong className="font-semibold">整備内容:</strong> {serviceTypeMap[reservation.serviceType]}</p>
+        <p className="text-gray-700"><strong className="font-semibold">代車:</strong> {reservation.carLoaner === 'yes' ? '必要' : '不要'}</p>
       </div>
       <button 
         onClick={onReset} 
