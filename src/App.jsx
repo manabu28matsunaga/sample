@@ -947,7 +947,7 @@ const App = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen font-sans antialiased">
+    <div className="bg-gray-50 min-h-screen font-sans antialiased flex flex-col">
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
       <header className="bg-white shadow-md fixed top-0 w-full z-40">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -974,7 +974,7 @@ const App = () => {
         </div>
       </header>
       
-      <main className="pt-20">
+      <main className="pt-20 flex-grow">
         {step > 0 && step < 5 && (
           <div className="sticky top-20 bg-gray-50 z-30 border-b border-gray-200">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -990,7 +990,7 @@ const App = () => {
         </div>
       </main>
 
-      <footer className="bg-gray-800 text-white mt-12">
+      <footer className="bg-gray-800 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
             <p>{t.footer.copyright}</p>
