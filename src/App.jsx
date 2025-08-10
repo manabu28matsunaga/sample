@@ -12,7 +12,7 @@ const translations = {
     },
     footer: {
       copyright: "© 2025 Netz Toyota Kitakyushu. All Rights Reserved.",
-      terms: "利用規約",
+      terms: "企業情報",
       privacy: "プライバシーポリシー"
     },
     topPage: {
@@ -98,7 +98,7 @@ const translations = {
       loanerCar: "代車",
       comments: "ご要望",
       none: "なし",
-      policy: "プライバシーポリシーに同意する",
+      policy: "{policyLink}に同意する",
       policyAlert: "プライバシーポリシーに同意してください。",
       backButton: "修正する",
       submitButton: "この内容で予約する"
@@ -132,7 +132,7 @@ const translations = {
     },
     footer: {
       copyright: "© 2025 Netz Toyota Kitakyushu. All Rights Reserved.",
-      terms: "Terms of Service",
+      terms: "Corporate Info",
       privacy: "Privacy Policy"
     },
     topPage: {
@@ -218,7 +218,7 @@ const translations = {
       loanerCar: "Loaner Car",
       comments: "Requests",
       none: "None",
-      policy: "I agree to the Privacy Policy",
+      policy: "I agree to the {policyLink}",
       policyAlert: "Please agree to the Privacy Policy.",
       backButton: "Edit",
       submitButton: "Confirm Booking"
@@ -311,7 +311,7 @@ const Toast = ({ message, type, onClose }) => {
   }, [onClose]);
 
   return (
-    <div className="fixed top-5 right-5 z-50">
+    <div className="fixed top-24 right-5 z-50">
       <div className={`${bgColor} text-white font-bold rounded-lg shadow-lg flex items-center p-4`}>
         <Icon className="mr-3" />
         <p>{message}</p>
@@ -532,7 +532,6 @@ const Step1_SelectStore = ({ onNext, reservation, setReservation, t, lang }) => 
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-center mb-2 text-gray-800">{t.step1.areaTitle}</h2>
       <div className="flex justify-center flex-wrap gap-2 mb-8">
         {storesData.map(area => (
           <button
@@ -595,7 +594,6 @@ const Step2_SelectDateTime = ({ onNext, onBack, reservation, setReservation, sho
   
   return (
     <div>
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">{t.step2.title}</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* First Choice */}
         <div className="space-y-4">
@@ -702,7 +700,6 @@ const Step3_InputUserInfo = ({ onNext, onBack, reservation, setReservation, show
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">{t.step3.title}</h2>
       <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg border border-gray-200 space-y-6">
         <fieldset className="border-t border-gray-200 pt-6">
           <legend className="text-lg font-semibold text-gray-900 mb-4">{t.step3.customerInfo}</legend>
@@ -789,10 +786,11 @@ const Step4_Confirmation = ({ onNext, onBack, reservation, lang, t }) => {
       <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0 font-semibold">{value || 'ー'}</dd>
     </div>
   );
+  
+  const policyTextParts = t.step4.policy.split('{policyLink}');
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">{t.step4.title}</h2>
       <div className="bg-white shadow-lg overflow-hidden sm:rounded-lg border border-gray-200">
         <div className="px-4 py-5 sm:px-6 bg-gray-50">
           <h3 className="text-lg font-semibold leading-6 text-gray-900">{t.step4.subtitle}</h3>
@@ -829,7 +827,9 @@ const Step4_Confirmation = ({ onNext, onBack, reservation, lang, t }) => {
           </div>
           <div className="ml-3 text-sm">
             <label htmlFor="policy" className="font-medium text-gray-700">
-              <a href="#" className="text-red-600 hover:underline">{t.footer.privacy}</a>{t.step4.policy.replace('プライバシーポリシー', '')}
+              {policyTextParts[0]}
+              <a href="https://www.hellonetz.jp/privacypolicy.html" target="_blank" rel="noopener noreferrer" className="text-red-600 hover:underline">{t.footer.privacy}</a>
+              {policyTextParts[1]}
             </label>
           </div>
         </div>
@@ -884,12 +884,23 @@ const App = () => {
   const [reservation, setReservation] = useState({});
   const [toast, setToast] = useState(null);
   const [lang, setLang] = useState('ja');
+  const [currentTitle, setCurrentTitle] = useState('');
 
   const t = translations[lang];
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [step]);
+
+  useEffect(() => {
+    const titles = {
+      1: t.step1.areaTitle,
+      2: t.step2.title,
+      3: t.step3.title,
+      4: t.step4.title,
+    };
+    setCurrentTitle(titles[step] || '');
+  }, [step, t]);
 
   const initialReservationState = {
     area: null, store: null, date1: null, time1: null, date2: null, time2: null,
@@ -938,7 +949,7 @@ const App = () => {
   return (
     <div className="bg-gray-50 min-h-screen font-sans antialiased">
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
-      <header className="bg-white shadow-md sticky top-0 z-40">
+      <header className="bg-white shadow-md fixed top-0 w-full z-40">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center cursor-pointer" onClick={handleReset}>
@@ -946,11 +957,11 @@ const App = () => {
               <span className="ml-3 text-lg sm:text-xl font-bold text-gray-700 hidden sm:block">{t.header.title}</span>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
-              <a href="#" className="text-sm font-medium text-gray-600 hover:text-red-600 transition flex items-center p-2">
+              <a href="https://www.hellonetz.com/support" target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-gray-600 hover:text-red-600 transition flex items-center p-2">
                 <AlertCircle size={16} className="mr-1" />
                 <span className="hidden sm:inline">{t.header.emergency}</span>
               </a>
-              <a href="#" className="text-sm font-medium text-gray-600 hover:text-red-600 transition flex items-center p-2">
+              <a href="https://www.hellonetz.com/shop-info" target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-gray-600 hover:text-red-600 transition flex items-center p-2">
                 <MapPin size={16} className="mr-1" />
                 <span className="hidden sm:inline">{t.header.stores}</span>
               </a>
@@ -963,10 +974,17 @@ const App = () => {
         </div>
       </header>
       
-      <main className="py-8">
+      <main className="pt-20">
+        {step > 0 && step < 5 && (
+          <div className="sticky top-20 bg-gray-50 z-30 border-b border-gray-200">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <Stepper currentStep={step} onStepClick={handleStepClick} t={t} />
+                <h2 className="text-2xl font-bold text-center pb-4">{currentTitle}</h2>
+            </div>
+          </div>
+        )}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {step > 0 && <Stepper currentStep={step} onStepClick={handleStepClick} t={t} />}
-          <div className="mt-8">
+          <div className={`${step > 0 && step < 5 ? '' : 'mt-8'}`}>
             {renderStep()}
           </div>
         </div>
@@ -977,8 +995,8 @@ const App = () => {
           <div className="text-center">
             <p>{t.footer.copyright}</p>
             <div className="flex justify-center space-x-6 mt-4">
-              <a href="#" className="text-sm hover:underline">{t.footer.terms}</a>
-              <a href="#" className="text-sm hover:underline">{t.footer.privacy}</a>
+              <a href="https://www.hellonetz.com/corporate" target="_blank" rel="noopener noreferrer" className="text-sm hover:underline">{t.footer.terms}</a>
+              <a href="https://www.hellonetz.jp/privacypolicy.html" target="_blank" rel="noopener noreferrer" className="text-sm hover:underline">{t.footer.privacy}</a>
             </div>
           </div>
         </div>
