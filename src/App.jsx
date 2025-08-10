@@ -311,7 +311,7 @@ const Toast = ({ message, type, onClose }) => {
   }, [onClose]);
 
   return (
-    <div className="fixed top-24 right-5 z-50">
+    <div className="fixed top-5 right-5 z-50">
       <div className={`${bgColor} text-white font-bold rounded-lg shadow-lg flex items-center p-4`}>
         <Icon className="mr-3" />
         <p>{message}</p>
@@ -532,6 +532,7 @@ const Step1_SelectStore = ({ onNext, reservation, setReservation, t, lang }) => 
 
   return (
     <div>
+      <h2 className="text-2xl font-bold text-center mb-2 text-gray-800">{t.step1.areaTitle}</h2>
       <div className="flex justify-center flex-wrap gap-2 mb-8">
         {storesData.map(area => (
           <button
@@ -594,6 +595,7 @@ const Step2_SelectDateTime = ({ onNext, onBack, reservation, setReservation, sho
   
   return (
     <div>
+      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">{t.step2.title}</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* First Choice */}
         <div className="space-y-4">
@@ -700,6 +702,7 @@ const Step3_InputUserInfo = ({ onNext, onBack, reservation, setReservation, show
 
   return (
     <div>
+      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">{t.step3.title}</h2>
       <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg border border-gray-200 space-y-6">
         <fieldset className="border-t border-gray-200 pt-6">
           <legend className="text-lg font-semibold text-gray-900 mb-4">{t.step3.customerInfo}</legend>
@@ -789,6 +792,7 @@ const Step4_Confirmation = ({ onNext, onBack, reservation, lang, t }) => {
 
   return (
     <div>
+      <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">{t.step4.title}</h2>
       <div className="bg-white shadow-lg overflow-hidden sm:rounded-lg border border-gray-200">
         <div className="px-4 py-5 sm:px-6 bg-gray-50">
           <h3 className="text-lg font-semibold leading-6 text-gray-900">{t.step4.subtitle}</h3>
@@ -880,23 +884,12 @@ const App = () => {
   const [reservation, setReservation] = useState({});
   const [toast, setToast] = useState(null);
   const [lang, setLang] = useState('ja');
-  const [currentTitle, setCurrentTitle] = useState('');
 
   const t = translations[lang];
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [step]);
-
-  useEffect(() => {
-    const titles = {
-      1: t.step1.areaTitle,
-      2: t.step2.title,
-      3: t.step3.title,
-      4: t.step4.title,
-    };
-    setCurrentTitle(titles[step] || '');
-  }, [step, t]);
 
   const initialReservationState = {
     area: null, store: null, date1: null, time1: null, date2: null, time2: null,
@@ -945,7 +938,7 @@ const App = () => {
   return (
     <div className="bg-gray-50 min-h-screen font-sans antialiased">
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
-      <header className="bg-white shadow-md fixed top-0 w-full z-40">
+      <header className="bg-white shadow-md sticky top-0 z-40">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center cursor-pointer" onClick={handleReset}>
@@ -970,16 +963,9 @@ const App = () => {
         </div>
       </header>
       
-      <main className="pt-20">
-        {step > 0 && step < 5 && (
-          <div className="sticky top-20 bg-gray-50 z-30 border-b border-gray-200">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <Stepper currentStep={step} onStepClick={handleStepClick} t={t} />
-                <h2 className="text-2xl font-bold text-center pb-4">{currentTitle}</h2>
-            </div>
-          </div>
-        )}
+      <main className="py-8">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {step > 0 && <Stepper currentStep={step} onStepClick={handleStepClick} t={t} />}
           <div className="mt-8">
             {renderStep()}
           </div>
