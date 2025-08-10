@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, User, Phone, Mail, Car, CheckCircle, AlertCircle, X } from 'lucide-react';
 
-// --- Dummy Data ---
+// --- sample Data ---
 const storesData = {
   '北九州地区': [
     { id: 'yahata', name: '八幡本店', address: '北九州市八幡西区本城東1-1-1', tel: '093-691-5678', time: '10:00-18:00' },
