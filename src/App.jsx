@@ -945,14 +945,14 @@ const App = () => {
               <img src="https://placehold.co/150x40/e81922/ffffff?text=Netz" alt="Logo" className="h-8 sm:h-10" />
               <span className="ml-3 text-lg sm:text-xl font-bold text-gray-700 hidden sm:block">{t.header.title}</span>
             </div>
-            <div className="flex items-center space-x-4">
-              <a href="#" className="text-sm font-medium text-gray-600 hover:text-red-600 transition flex items-center">
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <a href="#" className="text-sm font-medium text-gray-600 hover:text-red-600 transition flex items-center p-2">
                 <AlertCircle size={16} className="mr-1" />
-                {t.header.emergency}
+                <span className="hidden sm:inline">{t.header.emergency}</span>
               </a>
-              <a href="#" className="text-sm font-medium text-gray-600 hover:text-red-600 transition flex items-center">
+              <a href="#" className="text-sm font-medium text-gray-600 hover:text-red-600 transition flex items-center p-2">
                 <MapPin size={16} className="mr-1" />
-                {t.header.stores}
+                <span className="hidden sm:inline">{t.header.stores}</span>
               </a>
               <button onClick={toggleLanguage} className="text-sm font-medium text-gray-600 hover:text-red-600 transition flex items-center p-2 rounded-md border">
                 <Globe size={16} className="mr-1" />
